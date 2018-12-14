@@ -1,0 +1,440 @@
+'Phan.Star
+
+'phadvAnjain ver 1.1.0
+'update:
+'1.1.1: add TapPicRectIfFind()
+'1.2.0  add Find()
+'		idleTapDelay*10
+'1.2.1  fix find()  Rect bug
+'		add SwipeAB() and support find()
+Randomize
+Dim intX,intY,targetX,targetY,targetX2,targetY2
+Dim tempBool
+Dim lastTapTime
+lastTapTime = TickCount()
+
+'-------------------------
+'Find Func String
+Dim pic,findRect,tapMode,Rect,dropAB,DoNothing,tapFindXY,fuzzyRate,findDelay
+pic = "pic"
+findRect = "findRect"
+tapMode = "tapMode"
+Rect = "Rect"
+dropAB = "dropAB"
+DoNothing = "DoNothing"
+tapFindXY = "tapFindXY"
+fuzzyRate = "fuzzyRate"
+findDelay = "FindDelay"
+
+Dim pictureTable
+'..
+
+'-----------------------------------------------------------------------------------------
+// Main Loop
+Dim FriendCase
+FriendCase = "Friend_Allevne"
+While True
+    //work
+    'TestCode
+	KeepCapture 
+	
+	'search Naito Lv30
+	'Find {pic:"SpQuest_NaitoLv30_606,289,759,330..png", tapMode:findRect}
+	
+	'search Naito Lv60 quest
+	Dim IsFindQuest
+	IsFindQuest = Find({pic:"SpQuest_Event1Lv60_698,425,785,465..png"})
+	If IsFindQuest Then 
+		FriendCase = "Friend_Allevne"
+	Else 
+		'roll
+		Find {pic:"SpQuestTitle_663,11,928,33..png", dropAB:"789,341,758,174"}
+	End If
+
+	
+	
+	'IDOLA Battle -----------------------------------------------------
+	Dim IdolaBattleHasFind
+	IdolaBattleHasFind = IdolaBattle()
+	If IdolaBattleHasFind Then 
+		FriendCase = "Friend_Blacky"
+	End If
+
+	
+	'Globle Friend Select ---------------------------------------------
+	
+	If Not IdolaBattleHasFind Then 
+		FriendSelect(FriendCase)
+	End If
+	
+	Find {pic:"BattleReady_StartBattleConfirmBtn_575,429,614,447..png"}
+	Find {pic:"BattleEnd_NextBtn_460,490,500,508..png"}
+	
+	
+	'Globle BattleReady - ---------------------------------------------
+	'Todo Team Select
+
+	
+	'battle -----------------------------------------------------------	
+	If Find({pic:"Battle_EB_2,393,49,440..png"}) Then 
+	ElseIf Find({pic:"Battle_AutoOff_69,17,97,32..png"}) Then
+	ElseIf Find({pic:"Battle_SpeedUpOff_122,15,147,35..png"}) Then
+	End If
+	
+	
+	
+	
+	
+    'Global
+	If Find({pic:"NewDay1_453,435,511,449..png"}) Then 
+	ElseIf Find({pic:"NewDay2_Login_362,28,593,46..png"}) Then 
+	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
+	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
+	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
+	End If
+	
+	ReleaseCapture
+    '--------
+    
+    
+    
+    '--------
+
+
+
+    DelayRnd 900,200
+Wend
+EndScript
+
+
+
+Function FriendSelect(FriendCase)
+	Dim ScrollDown
+	ScrollDown = false
+	Select Case FriendCase
+		Case "Friend_Blacky"
+			If Find({pic:"BattleReady_ElementWaterNotSelect_701,90,747,102..png"}) Then 
+			Else 
+				ScrollDown = Not Find({pic:"Friend_Blacky..png", fuzzyRate:0.7, findRect:"685,115,817,462", tapMode:tapFindXY}) 
+			End If
+		Case "Friend_Allevne"  
+			ScrollDown = Not Find({pic:"Friend_Allevne..png",fuzzyRate:0.7 ,findRect:"685,115,817,462" , tapMode:tapFindXY}) 
+		Case Else
+			Find {pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}
+	End Select
+	If ScrollDown Then 
+		Find {pic:"BattleReady_SelectFriendTitle_396,17,558,44..png", dropAB:"789,341,758,260", FindDelay:900}
+	End If
+End Function
+
+Function IdolaBattle()
+	Dim IdolaBattleHasFind
+	IdolaBattleHasFind = True
+	
+
+	If Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
+	ElseIf Find({pic:"BattleEnd_CallRescueConfirm_684,508,604,493..png"}) Then
+	ElseIf Find({pic:"BattleEnd_CallRescueResult_684,508,604,493..png"}) Then
+	
+	ElseIf Find({pic:"Idola_KillReport_452,491,508,504..png"}) Then
+	ElseIf Find({pic:"Idola_TargetHasBeenDie_452,372,507,384..png"}) Then
+		DelayRnd 2000, 1000
+		TapXy 60, 514
+
+
+	'main Menu - RefreshIdola  
+	ElseIf Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then
+	
+	
+	ElseIf Find({pic:"Idola_HaveEnergy_721,82,729,91..png", tapMode:DoNothing}) Then 
+		'Class S=1000 A=100 Rare+=10 Plus+=1
+		Dim L1Class
+		L1Class = 0
+		If Find({pic:"Idola_1HasBeenBattle_791,150,820,155..png", tapMode:DoNothing}) Then 
+			L1Class = -1
+		Else 
+			L1Class = L1Class + Find({pic:"Idola_1isClassS_529,218,555,233..png", tapMode:DoNothing})*-1000
+			'L1Class = L1Class + Find({pic:"Idola_1isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
+			'L1Class = L1Class + Find({pic:"Idola_1isRare_869,305,918,316..png", tapMode:DoNothing})*-10
+			'L1Class = L1Class + Find({pic:"Idola_1isClassPlus_541,321,568,328..png", tapMode:DoNothing}) * -1
+			'todo HP
+		End If
+		
+		Dim L2Class
+		L2Class = 0
+		If Find({pic:"Idola_2HasBeenBattle_791,294,820,298..png", tapMode:DoNothing}) Then 
+			L2Class = -1
+		Else 
+			L2Class = L2Class + Find({pic:"Idola_2isClassS_529,360,555,373..png", tapMode:DoNothing})*-1000
+			L2Class = L2Class + Find({pic:"Idola_2isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
+			L2Class = L2Class + Find({pic:"Idola_2isRare_869,305,918,316..png", tapMode:DoNothing})*-10
+			L2Class = L2Class + Find({pic:"Idola_2isClassPlus_541,321,568,328..png", tapMode:DoNothing}) * -1
+		End If
+		
+		TracePrint "debug : L1Class:" & L1Class & " , " & "L2Class:" & L2Class
+		
+//		L1Class = 0	
+//		L2Class = 0	
+		Dim MenuIsNotOn
+		MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
+		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
+		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 0 Then 
+			TapRect 527,184,829,238
+		ElseIf MenuIsNotOn And L2Class > 0 Then
+			TapRect 560, 329, 837, 386
+		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_762,108,783,122..png"}) Then
+		Else 
+			If Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Then
+				TracePrint "Delay for refresh Idola List"
+				DelayRnd 3000,10000
+			End If
+		End If
+	ElseIf Find({pic:"Idola_NoEnergy_722,81,729,92..png"}) Then
+		DelayRnd 1000, 20000
+	Else 
+		IdolaBattleHasFind = False
+	End If
+	
+	IdolaBattle = IdolaBattleHasFind
+End Function
+
+
+
+'-----------------------------------------------------------------------------------------
+'------------------------------- anjain advance function ---------------------------------
+
+'ex: "Btn_InTheStoryMenu_Skip_793,29,819,60..png" -> 793,29,819,60
+Function GetFindPicRangeFromFormattedPicName(picName)
+    Dim str1
+    str1 = picName
+    Dim last_
+    last_ = InStrRev(str1, "_", -1)
+    Dim dotdotPng
+    dotdotPng = InStrRev(str1, "..png", -1,true)
+    GetFindPicRangeFromFormattedPicName = Mid(str1,last_+1,dotdotPng-last_-1)
+End Function
+
+
+Function TapPicRectIfFind(x1,y1,x2,y2,picName)
+    tempBool = FindPicFunc(x1, y1, x2, y2, picName)
+    TapPicRectIfFind = tempBool
+    If tempBool Then
+        TapRect(x1,y1,x2,y2)
+    End If
+End Function
+Function TapRectIfFind(x1,y1,x2,y2,picName,tapX1,tapY1,tapX2,tapY2)
+    tempBool = FindPicFunc(x1, y1, x2, y2, picName)
+    TapRectIfFind = tempBool
+    If tempBool Then
+        TapRect(tapX1,tapY1,tapX2,tapY2)
+    End If
+End Function
+
+Function TapXyIfFind(x1,y1,x2,y2,picName,tapX,tapY)
+    tempBool = FindPicFunc(x1, y1, x2, y2, picName)
+    TapXyIfFind = tempBool
+    If tempBool Then
+        TapXy(tapX,tapY)
+    End If
+End Function
+Function TapIfFind
+    If HasFind() Then
+        TapFind
+    End If
+End Function
+Function HasFind()
+    tempBool = intX > -1 And intY > -1
+    HasFind = tempBool
+End Function
+Sub TapFind
+    TapXy intX,intY
+End Sub
+Sub TapRect(tapX1,tapY1,tapX2,tapY2)
+    targetX = tapX1 + (tapX2-tapX1) * Rnd()
+    targetY = tapY1 + (tapY2 - tapY1) * Rnd()
+    TapXy targetX,targetY
+End Sub
+
+Function Find(p)
+	Dim FindFuncParam '(x1,y1,x2,y2,picName,fuzzyRate)
+    Dim picName
+    Dim find_x1,find_y1,find_x2,find_y2,ArrTemp()
+    Dim FindAction
+    Dim hasfindTemp
+    Dim fuzzyRateTemp
+    Dim findDirectTemp
+    Dim findDelayTemp
+    
+	'Read---------------------------------------------------------------
+    findDelayTemp = 0
+	If p[findDelay] <> null Then 
+		findDelayTemp = int(p[findDelay])
+	End If
+	
+    'Condition--------------------------------------------------------
+    fuzzyRateTemp = 0.9
+    findDirectTemp = 1
+    
+    If p[pic] <> null Then 
+        picName = p[pic]
+        FindFuncParam = FindFuncParam + 000010
+        
+    	If p[findRect] <> null Then 
+        	ArrTemp = SplitComma(p[findRect])
+    	Else
+        	ArrTemp = SplitComma(GetFindPicRangeFromFormattedPicName(picName))
+    	End If
+    	FindAction = findRect
+    	
+        find_x1 = ArrTemp(0)
+        If find_x1 Then 
+        	FindFuncParam = FindFuncParam + 100000
+        End If
+        find_y1 = ArrTemp(1)
+        If find_y1 Then 
+        	FindFuncParam = FindFuncParam + 010000
+        End If
+        find_x2 = ArrTemp(2)
+        If find_x2 Then 
+        	FindFuncParam = FindFuncParam + 001000
+        End If
+        find_y2 = ArrTemp(3)
+        If find_y2 Then 
+        	FindFuncParam = FindFuncParam + 000100
+        End If
+    End If
+    
+    If p[fuzzyRate] <> null Then 
+    	fuzzyRateTemp = p[fuzzyRate]
+        FindFuncParam = FindFuncParam + 000001
+    End If
+    
+    If FindFuncParam = 111111 Then 
+    	FindFuzzyPicFunc(find_x1, find_y1, find_x2, find_y2, picName, findDirectTemp, fuzzyRateTemp)
+	ElseIf FindFuncParam = 111110 Then 
+    	FindPicFunc find_x1, find_y1, find_x2, find_y2, picName
+	End If
+	
+	
+	
+	Dim tap_x1,tap_y1,tap_x2,tap_y2
+	If p[Rect] <> null Then 
+        ArrTemp = SplitComma(p[Rect])
+        tap_x1 = ArrTemp(0)
+        tap_y1 = ArrTemp(1)
+        tap_x2 = ArrTemp(2)
+        tap_y2 = ArrTemp(3)
+        FindAction = Rect
+	End If
+	If p[dropAB] <> null Then 
+        ArrTemp = SplitComma(p[dropAB])
+        tap_x1 = ArrTemp(0)
+        tap_y1 = ArrTemp(1)
+        tap_x2 = ArrTemp(2)
+        tap_y2 = ArrTemp(3)
+        FindAction = dropAB
+	End If
+	
+	'override FindAction
+	If p[tapMode] <> null Then 
+		FindAction = p[tapMode]
+	End If
+	
+	
+	'Action-----------------------------------------------------------
+	hasfindTemp = HasFind()
+	If hasfindTemp Then 
+		Select Case FindAction
+			Case findRect
+				TapRect find_x1, find_y1, find_x2, find_y2
+			Case Rect
+				TapRect tap_x1, tap_y1, tap_x2, tap_y2
+			Case dropAB
+				SwipeAB tap_x1, tap_y1, tap_x2, tap_y2
+			Case tapFindXY
+				
+				TapFind
+			Case Else
+				'DoNothing
+		End Select
+		Delay findDelayTemp
+	End If
+	
+	Find = hasfindTemp
+End Function
+Function ReadIntParam(strParam1)
+	ReadIntParam = null
+	If strParam1 <> null Then 
+		ReadIntParam = int(strParam1)
+	End If
+End Function
+
+'-----------------------------------------------------------------------------------------
+'----------------------------------- anjain Base API -------------------------------------
+Function SplitComma(str1)
+	SplitComma = Split(str1,",")
+End Function
+Function SplitArrStr(str1)
+	SplitArrStr = Split(str1,"|")
+End Function
+
+Function FindColorFunc(x1,y1,x2,y2,colorName)
+    FindColorFunc = False
+    FindColor x1, y1 ,x2 ,y2 , colorName,0,0.9,intX,intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "Find " & colorName
+        FindColorFunc = True
+    End If
+End Function
+Function FindPicFunc(x1,y1,x2,y2,picName)
+    FindPicFunc = False
+    FindPic x1, y1 ,x2 ,y2 ,  "Attachment:" & picName, "000000", 0, 0.9, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "Find " & picName
+        FindPicFunc = True
+    End If
+End Function
+Function FindFuzzyPicFunc(x1,y1,x2,y2,picName,direct,fuzzyRate)
+    FindFuzzyPicFunc = False
+    FindPic x1, y1 ,x2 ,y2 , "Attachment:" & picName, "000000", direct, fuzzyRate, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "Find " & picName
+        FindFuzzyPicFunc = True
+    End If
+End Function
+
+Sub TapXy(tapX, tapY)
+    targetX = int(tapX + 5 * Rnd())
+    targetY = int(tapY + 5 * Rnd())
+    Dim WakuUpTimeMS
+    WakuUpTimeMS = 10 + Sqr(TickCount() - lastTapTime) * 10 * Rnd()
+    Delay WakuUpTimeMS
+    Tap targetX, targetY
+    lastTapTime = TickCount()
+    TracePrint "Tap " & targetX & "," & targetY
+    Delay 10 + 15 * Rnd()
+End Sub
+Sub SwipeAB(swipeAx, swipeAy,swipeBx,swipeBy)
+    targetX = int(swipeAx + 5 * Rnd())
+    targetY = int(swipeAy + 5 * Rnd())
+    targetX2 = int(swipeBx + 5 * Rnd())
+    targetY2 = int(swipeBy + 5 * Rnd())
+    Dim WakuUpTimeMS
+    WakuUpTimeMS = 10 + Sqr(TickCount() - lastTapTime) * 10 * Rnd()
+    Delay WakuUpTimeMS
+    Swipe targetX, targetY, targetX2, targetY2
+    lastTapTime = TickCount()
+    TracePrint "Swipe " & targetX & "," & targetY & " to " &  targetX2 & "," & targetY2
+    Delay 10 + 15 * Rnd()
+End Sub
+
+
+Sub PrintIfFind(msgStr)
+    If intX > -1 And intY > -1 Then
+        TracePrint msgStr
+    End If
+End Sub
+Sub DelayRnd(BaseDelay,RndDelay)
+    Delay BaseDelay + RndDelay*Rnd()
+End Sub
+

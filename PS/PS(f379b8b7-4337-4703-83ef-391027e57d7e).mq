@@ -1,12 +1,7 @@
 'Phan.Star
 
-'phadvAnjain ver 1.1.0
-'update:
-'1.1.1: add TapPicRectIfFind()
-'1.2.0  add Find()
-'		idleTapDelay*10
-'1.2.1  fix find()  Rect bug
-'		add SwipeAB() and support find()
+'import phadvAnjain ver 1.2.1
+
 Randomize
 Dim intX,intY,targetX,targetY,targetX2,targetY2
 Dim tempBool
@@ -91,6 +86,8 @@ While True
 	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
+	
+	ElseIf Find({pic:"LeUp_197,350,299,379..png"}) Then
 	End If
 	
 	ReleaseCapture
@@ -189,7 +186,7 @@ Function IdolaBattle()
 				DelayRnd 3000,10000
 			End If
 		End If
-	ElseIf Find({pic:"Idola_NoEnergy_722,81,729,92..png"}) Then
+	ElseIf Find({pic:"Idola_NoEnergy_722,81,729,92..png",tapMode:DoNothing}) Then
 		DelayRnd 1000, 20000
 	Else 
 		IdolaBattleHasFind = False

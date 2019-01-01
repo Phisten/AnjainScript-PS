@@ -108,7 +108,6 @@ Function Find(p)
     If p[findRect] <> null Then 
     	FindAction = findRect
         ArrTemp = SplitComma(p[findRect])
-    	FindAction = findRect
         If UBound(ArrTemp) = 3 Then 
         	find_x1 = ArrTemp(0)
         	find_y1 = ArrTemp(1)
@@ -291,6 +290,9 @@ FriendCase = "EventDropUp"
 FriendCase = "WithOutFriend"
 FriendCase = "Jasupa100t4"
 
+Dim MemberCase
+MemberCase  = "Best"
+
 While True
     //work
     'TestCode
@@ -304,11 +306,23 @@ While True
 	
 	'search Naito Lv60 quest
 	Dim IsFindQuest
-	IsFindQuest = Find({pic:"Event3Quest3_545,454,574,466..png"})
+	IsFindQuest = Find({pic:"SpQuestLv60_562,436,580,452..png"})
+	'IsFindQuest = Find({pic:"DailyQuest60_709,424,766,439..png"})
+	'IsFindQuest = Find({pic:"DailyMoney60_878,425,911,443..png"})
+	
+	
+	
 	If IsFindQuest Then 
-		FriendCase = "EventDropUp"
+		MemberCase = "Lv"
 		FriendCase = "WithOutFriend"
-	Else 
+		FriendCase = "EventDropUp"
+	ElseIf Find({pic:"NoAp_144,22,250,34..png", tapMode:DoNothing}) Then
+		DelayRnd 2000, 1000
+		TapXy 481, 497
+		DelayRnd 2000, 1000
+		TapXy 923,506
+	ElseIf Find({pic:"DailyQuestPage_672,5,857,24..png", tapMode:DoNothing}) Then
+		SwipeAB 796,408,793,148
 		'roll
 		'Find {pic:"SpQuestTitle_663,11,928,33..png", dropAB:"789,341,758,174"}
 	End If
@@ -319,6 +333,7 @@ While True
 	Dim IdolaBattleHasFind
 	IdolaBattleHasFind = IdolaBattle()
 	If IdolaBattleHasFind Then 
+		MemberCase = "Best"
 		FriendCase = "Jasupa100t4"
 	End If
 
@@ -326,7 +341,9 @@ While True
 	'Globle Friend Select ---------------------------------------------
 	
 	If Not IdolaBattleHasFind Then 
-		FriendSelect(FriendCase)
+		If MemberSelect(MemberCase) Then 
+		ElseIf FriendSelect(FriendCase) Then 
+		End If
 	End If
 	
 	If  Find({pic:"BattleReady_StartBattleConfirmBtn_575,429,614,447..png"}) Then 
@@ -351,13 +368,17 @@ While True
 	
     'Global
 	If Find({pic:"NewDay1_453,435,511,449..png"}) Then 
-	ElseIf Find({pic:"NewDay2_Login_362,28,593,46..png"}) Then 
+	ElseIf Find({pic:"NewDay2_Login_362,28,593,46..png"}) Then
+	ElseIf Find({pic:"NewDay2_NewYearLogin_287,30,536,45..png"}) Then
+	
 	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
 	
 	ElseIf Find({pic:"SPLogin_324,26,484,47..png"}) Then
 	ElseIf Find({pic:"LeUp_197,350,299,379..png"}) Then
+	
+	ElseIf Find({pic:"CampaignMsg_455,429,510,445..png"}) Then
 	End If
 	
 	ReleaseCapture
@@ -383,8 +404,8 @@ Function FriendSelect(FriendCase)
 			If Find({pic:"BattleReady_LowTeam_42,206,103,224..png",Dot:"251,190"}) Then
 			ElseIf Find({pic:"BattleReady_ElementWindNotSelect_781,83,807,99..png"}) Then 
 			Else
-				ScrollDown = Not Find({pic:"Jasupa100t4..png", fuzzyRate:0.7, findRect:"677,116,919,465"}) 
-				ScrollDown = ScrollDown And Not(Find({pic:"Jasupa100t4_2..png", fuzzyRate:0.7, findRect:"677,116,919,465"}))
+				ScrollDown = Not Find({pic:"Jasupa100t4..png", fuzzyRate:0.8, findRect:"677,116,919,465"}) 
+				ScrollDown = ScrollDown And Not(Find({pic:"Jasupa100t4_2..png", fuzzyRate:0.8, findRect:"677,116,919,465"}))
 			End If
 		Case "Friend_Blacky"
 			If Find({pic:"BattleReady_ElementWaterNotSelect_701,90,747,102..png"}) Then 
@@ -407,8 +428,23 @@ Function FriendSelect(FriendCase)
 			TracePrint "FriendCaseNotFound :" & FriendCase
 	End Select
 	If ScrollDown Then 
+		Find({color:"80E0FF",Rect:"746,498,918,518",findRect:"931,464"})
 		Find {pic:"BattleReady_SelectFriendTitle_396,17,558,44..png", dropAB:"789,341,758,260", FindDelay:900}
 	End If
+End Function
+Function MemberSelect(memberCase)
+	Dim MemberTable
+	MemberTable = {"4Wind":"","4Fire":"","4Water":"218,108","Best":"240,108","Lv":"263,108"}
+	'Dim selectedColor
+	'selectedColor = "333B33"
+	Dim NoSelectColor
+	NoSelectColor = "D7F5FF"
+	
+	Dim MemberSelectSuccess
+	If Find({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png", tapMode:DoNothing}) Then 
+		MemberSelectSuccess = Find({color:NoSelectColor,findRect:MemberTable[memberCase]})
+	End If
+	MemberSelect = MemberSelectSuccess
 End Function
 
 Function IdolaBattle()
@@ -438,9 +474,9 @@ Function IdolaBattle()
 			L1Class = -1
 		Else 
 			L1Class = L1Class + Find({pic:"Idola_1isClassS_529,218,555,233..png", tapMode:DoNothing})*-1000
-			'L1Class = L1Class + Find({pic:"Idola_1isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
-			'L1Class = L1Class + Find({pic:"Idola_1isRare_869,305,918,316..png", tapMode:DoNothing})*-10
-			'L1Class = L1Class + Find({pic:"Idola_1isClassPlus_541,321,568,328..png", tapMode:DoNothing}) * -1
+			L1Class = L1Class + Find({pic:"Idola_1isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
+			L1Class = L1Class + Find({pic:"Idola_2isRare_877,166,917,176..png", tapMode:DoNothing})*-10
+			L1Class = L1Class + Find({pic:"Idola_1isClassPlus_550,179,564,186..png", tapMode:DoNothing}) * -1
 			'todo HP
 		End If
 		
@@ -462,9 +498,9 @@ Function IdolaBattle()
 		Dim MenuIsNotOn
 		MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
 		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
-		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 0 Then 
+		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 1 Then 
 			TapRect 527,184,829,238
-		ElseIf MenuIsNotOn And L2Class > 0 Then
+		ElseIf MenuIsNotOn And L2Class > 1 Then
 			TapRect 560, 329, 837, 386
 		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_762,108,783,122..png"}) Then
 		Else 

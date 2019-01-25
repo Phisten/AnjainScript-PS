@@ -306,25 +306,35 @@ While True
 	
 	'search Naito Lv60 quest
 	Dim IsFindQuest
-	IsFindQuest = Find({pic:"SpQuestLv60_562,436,580,452..png"})
+
+	IsFindQuest = Find({pic:"SpQuest_Lv60_529,440,674,465..png"})
 	'IsFindQuest = Find({pic:"DailyQuest60_709,424,766,439..png"})
-	'IsFindQuest = Find({pic:"DailyMoney60_878,425,911,443..png"})
+	If IsFindQuest = False Then
+		IsFindQuest = Find({pic:"SpQuestLv60_670,399,568,381..png"})
+	End If
+	If IsFindQuest = False Then
+		IsFindQuest = Find({pic:"DailyMoney60_878,425,911,443..png"})
+	End If
 	
 	
 	
 	If IsFindQuest Then 
 		MemberCase = "Lv"
-		FriendCase = "WithOutFriend"
 		FriendCase = "EventDropUp"
+		FriendCase = "WithOutFriend"
+	ElseIf Find({pic:"QuestSelect_SP_637,290,671,371..png"}) Then
 	ElseIf Find({pic:"NoAp_144,22,250,34..png", tapMode:DoNothing}) Then
 		DelayRnd 2000, 1000
 		TapXy 481, 497
 		DelayRnd 2000, 1000
-		TapXy 923,506
+		TapXy 923, 506
+	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
+		SwipeAB 796,408,793,148
 	ElseIf Find({pic:"DailyQuestPage_672,5,857,24..png", tapMode:DoNothing}) Then
 		SwipeAB 796,408,793,148
 		'roll
 		'Find {pic:"SpQuestTitle_663,11,928,33..png", dropAB:"789,341,758,174"}
+	'ElseIf Find({pic:"QuestSelect_Daily_835,226,703,189..png"}) Then
 	End If
 
 	'TracePrint FriendCase
@@ -337,7 +347,6 @@ While True
 		FriendCase = "Jasupa100t4"
 	End If
 
-	
 	'Globle Friend Select ---------------------------------------------
 	
 	If Not IdolaBattleHasFind Then 
@@ -350,8 +359,6 @@ While True
 	ElseIf Find({pic:"BattleEnd_NextBtn_460,490,500,508..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_FirstResult_438,484,549,505..png"}) Then 
 	
-	
-	
 	'Globle BattleReady - ---------------------------------------------
 	'Todo Team Select
 
@@ -362,10 +369,7 @@ While True
 	ElseIf Find({pic:"Battle_SpeedUpOff_122,15,147,35..png"}) Then
 	End If
 	
-	
-	
-	
-	
+
     'Global
 	If Find({pic:"NewDay1_453,435,511,449..png"}) Then 
 	ElseIf Find({pic:"NewDay2_Login_362,28,593,46..png"}) Then
@@ -374,11 +378,15 @@ While True
 	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
+	ElseIf Find({pic:"LoginTitle_939,527,883,517..png"}) Then
+
 	
 	ElseIf Find({pic:"SPLogin_324,26,484,47..png"}) Then
 	ElseIf Find({pic:"LeUp_197,350,299,379..png"}) Then
 	
 	ElseIf Find({pic:"CampaignMsg_455,429,510,445..png"}) Then
+	
+	ElseIf Find({pic:"Disconnect_511,386,426,371..png"}) Then
 	End If
 	
 	ReleaseCapture
@@ -498,9 +506,9 @@ Function IdolaBattle()
 		Dim MenuIsNotOn
 		MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
 		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
-		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 1 Then 
+		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 100 Then 
 			TapRect 527,184,829,238
-		ElseIf MenuIsNotOn And L2Class > 1 Then
+		ElseIf MenuIsNotOn And L2Class > 100 Then
 			TapRect 560, 329, 837, 386
 		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_762,108,783,122..png"}) Then
 		Else 
@@ -511,6 +519,11 @@ Function IdolaBattle()
 		End If
 	ElseIf Find({pic:"Idola_NoEnergy_722,81,729,92..png",tapMode:DoNothing}) Then
 		DelayRnd 1000, 20000
+		'goto Quest
+		If Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Then
+			DelayRnd 1000, 500
+//			TapXy 813,421
+		End If
 	Else 
 		IdolaBattleHasFind = False
 	End If

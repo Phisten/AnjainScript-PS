@@ -287,11 +287,16 @@ Dim FriendCase
 FriendCase = "Friend_Blacky"
 FriendCase = "Friend_Allevne"
 FriendCase = "EventDropUp"
-FriendCase = "WithOutFriend"
 FriendCase = "Jasupa100t4"
+FriendCase = "WithOutFriend"
+FriendCase = "WithOutFriend"
+FriendCase = "ChaosWithOutFriend"
 
 Dim MemberCase
-MemberCase  = "Best"
+MemberCase = "Best"
+
+Dim NeedCreateIdola
+NeedCreateIdola = true
 
 While True
     //work
@@ -307,34 +312,41 @@ While True
 	'search Naito Lv60 quest
 	Dim IsFindQuest
 
-	IsFindQuest = Find({pic:"SpQuest_Lv60_529,440,674,465..png"})
-	'IsFindQuest = Find({pic:"DailyQuest60_709,424,766,439..png"})
-	If IsFindQuest = False Then
-		IsFindQuest = Find({pic:"SpQuestLv60_670,399,568,381..png"})
+	IsFindQuest = Find({pic:"SpQuest_Lv60_592,465,532,435..png"})
+	If IsFindQuest Then 
+		FriendCase = "WithOutFriend"
 	End If
+
+
 	If IsFindQuest = False Then
 		IsFindQuest = Find({pic:"DailyMoney60_878,425,911,443..png"})
+		If IsFindQuest Then 
+			FriendCase = "WithOutFriend"
+		End If
 	End If
-	
+	If IsFindQuest = False Then
+		IsFindQuest = Find({pic:"DailyQuest60_709,424,766,439..png"})
+		If IsFindQuest Then 
+			FriendCase = "WithOutFriend"
+		End If
+	End If
 	
 	
 	If IsFindQuest Then 
 		MemberCase = "Lv"
-		FriendCase = "EventDropUp"
-		FriendCase = "WithOutFriend"
-	ElseIf Find({pic:"QuestSelect_SP_637,290,671,371..png"}) Then
+	//ElseIf Find({pic:"SelectSP_906,288,882,279..png"}) Then
+	//ElseIf Find({pic:"SpQuest_Select_846,338,660,301..png"}) Then
 	ElseIf Find({pic:"NoAp_144,22,250,34..png", tapMode:DoNothing}) Then
 		DelayRnd 2000, 1000
 		TapXy 481, 497
 		DelayRnd 2000, 1000
 		TapXy 923, 506
-	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
-		SwipeAB 796,408,793,148
+//	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
+//		SwipeAB 796,408,793,148
 	ElseIf Find({pic:"DailyQuestPage_672,5,857,24..png", tapMode:DoNothing}) Then
 		SwipeAB 796,408,793,148
 		'roll
-		'Find {pic:"SpQuestTitle_663,11,928,33..png", dropAB:"789,341,758,174"}
-	'ElseIf Find({pic:"QuestSelect_Daily_835,226,703,189..png"}) Then
+	ElseIf Find({pic:"QuestSelect_Daily_835,226,703,189..png"}) Then
 	End If
 
 	'TracePrint FriendCase
@@ -345,6 +357,7 @@ While True
 	If IdolaBattleHasFind Then 
 		MemberCase = "Best"
 		FriendCase = "Jasupa100t4"
+		FriendCase = "ChaosWithOutFriend"
 	End If
 
 	'Globle Friend Select ---------------------------------------------
@@ -357,7 +370,12 @@ While True
 	
 	If  Find({pic:"BattleReady_StartBattleConfirmBtn_575,429,614,447..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_NextBtn_460,490,500,508..png"}) Then 
-	ElseIf Find({pic:"BattleEnd_FirstResult_438,484,549,505..png"}) Then 
+	ElseIf Find({pic:"BattleEnd_FirstResult_438,484,549,505..png"}) Then
+	ElseIf Find({pic:"BattleResult_Items_929,30,847,13..png", Dot:"496,499"}) Then
+	ElseIf Find({pic:"BattleEnd_again_374,505,338,495..png"}) Then
+	ElseIf Find({pic:"BattleEnd_DoNotPostIdola_390,508,308,495..png"}) Then
+	
+	
 	
 	'Globle BattleReady - ---------------------------------------------
 	'Todo Team Select
@@ -367,11 +385,15 @@ While True
 	ElseIf Find({pic:"Battle_EB_2,393,49,440..png"}) Then 
 	ElseIf Find({pic:"Battle_AutoOff_69,17,97,32..png"}) Then
 	ElseIf Find({pic:"Battle_SpeedUpOff_122,15,147,35..png"}) Then
-	End If
+
 	
 
     'Global
-	If Find({pic:"NewDay1_453,435,511,449..png"}) Then 
+    
+	ElseIf Find({pic:"MissionList_178,34,36,21..png",Dot:"467,494"}) Then
+	
+	
+	ElseIf Find({pic:"NewDay1_453,435,511,449..png"}) Then 
 	ElseIf Find({pic:"NewDay2_Login_362,28,593,46..png"}) Then
 	ElseIf Find({pic:"NewDay2_NewYearLogin_287,30,536,45..png"}) Then
 	
@@ -379,6 +401,7 @@ While True
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
 	ElseIf Find({pic:"LoginTitle_939,527,883,517..png"}) Then
+	ElseIf Find({pic:"EventLogin_468,48,110,26..png"}) Then
 
 	
 	ElseIf Find({pic:"SPLogin_324,26,484,47..png"}) Then
@@ -415,13 +438,10 @@ Function FriendSelect(FriendCase)
 				ScrollDown = Not Find({pic:"Jasupa100t4..png", fuzzyRate:0.8, findRect:"677,116,919,465"}) 
 				ScrollDown = ScrollDown And Not(Find({pic:"Jasupa100t4_2..png", fuzzyRate:0.8, findRect:"677,116,919,465"}))
 			End If
-		Case "Friend_Blacky"
-			If Find({pic:"BattleReady_ElementWaterNotSelect_701,90,747,102..png"}) Then 
-			Else 
-				ScrollDown = Not Find({pic:"Friend_Blacky..png", fuzzyRate:0.7, findRect:"685,115,817,462", tapMode:tapFindXY}) 
+		Case "ChaosWithOutFriend"
+			If Find({pic:"BattleReady_LowTeam_42,206,103,224..png", Dot:"251,190"}) Then 
+			ElseIf Find({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"})Then
 			End If
-		Case "Friend_Allevne"  
-			ScrollDown = Not Find({pic:"Friend_Allevne..png", fuzzyRate:0.7, findRect:"685,115,817,462", tapMode:tapFindXY})
 		Case "WithOutFriend"
 			Find {pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}
 		Case "EventDropUp"
@@ -458,20 +478,42 @@ End Function
 Function IdolaBattle()
 	Dim IdolaBattleHasFind
 	IdolaBattleHasFind = True
-	
 
-	If Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
+	If NeedCreateIdola And Find({pic:"Idola_PlayViewEnd_151,62,292,78..png", Dot:"582,442"}) Then 
+	ElseIf Find({pic:"Idola_CreateNewIdola_850,369,792,358..png"}) Then
+	ElseIf Find({pic:"Idola_PlayViewEnd_870,373,766,359..png"}) Then
+		NeedCreateIdola = true
+	ElseIf NeedCreateIdola And Find({pic:"Idola_StatusDetail_865,439,776,428..png", Dot:"220,515"}) Then
+		NeedCreateIdola = false
+	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateIdola_691,106,746,116..png", Dot:"696,452"}) Then
+	
+	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_852,434,925,453..png"}) Then 
+	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png",Dot:"600,413"}) Then
+	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_364,502,452,516..png"}) Then 
+	//ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", Dot:"922,506"}) Then
+	ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", tapMode:DoNothing}) And Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Then
+		NeedCreateIdola = false
+	ElseIf Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_CallRescueConfirm_684,508,604,493..png"}) Then
 	ElseIf Find({pic:"BattleEnd_CallRescueResult_684,508,604,493..png"}) Then
-	
+	ElseIf Find({pic:"idola_End_752,84,846,414..png", tapMode:DoNothing}) Then
+		TapXy 452, 491
+		NeedCreateIdola = true
+		DelayRnd 2000, 1000
 	ElseIf Find({pic:"Idola_KillReport_452,491,508,504..png"}) Then
+
 	ElseIf Find({pic:"Idola_TargetHasBeenDie_452,372,507,384..png"}) Then
 		DelayRnd 2000, 1000
 		TapXy 60, 514
+	ElseIf Find({pic:"Idola_Result_935,33,847,13..png",Dot:"482,499"}) Then
+	ElseIf Find({pic:"Idola_ResultNext_483,492,414,454..png",Dot:"476,491"}) Then
+	ElseIf Find({pic:"Idola_ResultNextBtn_500,507,464,493..png"}) Then
+	
 
 
 	'main Menu - RefreshIdola  
 	ElseIf Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then
+	ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
 	
 	
 	ElseIf Find({pic:"Idola_HaveEnergy_721,82,729,91..png", tapMode:DoNothing}) Then 
@@ -505,7 +547,10 @@ Function IdolaBattle()
 //		L2Class = 0	
 		Dim MenuIsNotOn
 		MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
+		
 		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
+		ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
+		
 		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 100 Then 
 			TapRect 527,184,829,238
 		ElseIf MenuIsNotOn And L2Class > 100 Then
@@ -522,7 +567,7 @@ Function IdolaBattle()
 		'goto Quest
 		If Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Then
 			DelayRnd 1000, 500
-//			TapXy 813,421
+			TapXy 813,421
 		End If
 	Else 
 		IdolaBattleHasFind = False

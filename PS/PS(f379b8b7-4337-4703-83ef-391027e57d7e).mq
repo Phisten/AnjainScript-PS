@@ -569,6 +569,9 @@ Function IdolaBattle()
 			DelayRnd 1000, 500
 			TapXy 813,421
 		End If
+		
+	ElseIf Find({pic:"Idola_WeekEnd1_218,71,165,58..png",Dot:"491,435"}) Then
+	
 	Else 
 		IdolaBattleHasFind = False
 	End If

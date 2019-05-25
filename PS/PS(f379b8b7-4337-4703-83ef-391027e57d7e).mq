@@ -431,6 +431,8 @@ While True
 	ElseIf Find({pic:"SPLogin_431,47,273,26..png"}) Then
 	ElseIf Find({pic:"SpLogin_771,34,553,28..png",findRect:"149,34,807,28"}) Then
 	ElseIf Find({pic:"SpLogin_110,103,45,65..png",Dot:"483,504"}) Then
+	ElseIf Find({pic:"SpLoginJagar_220,19,538,56..png"}) Then
+	
 	
 	ElseIf Find({pic:"LeUp_197,350,299,379..png"}) Then
 	
@@ -523,18 +525,23 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_CreateNewIdola_850,369,792,358..png"}) Then
 	ElseIf Find({pic:"Idola_PlayViewEnd_870,373,766,359..png"}) Then
 		NeedCreateIdola = true
-	ElseIf NeedCreateIdola And Find({pic:"Idola_StatusDetail_865,439,776,428..png", Dot:"220,515"}) Then
+	ElseIf Find({pic:"Idola_StatusDetail_865,439,776,428..png", Dot:"220,515"}) Then
 		NeedCreateIdola = false
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateIdola_691,106,746,116..png", Dot:"696,452"}) Then
 	
-	ElseIf Find({pic:"Idola_CreateBtn_861,389,915,450..png"}) Then
 	
+	ElseIf Find({pic:"Idola_CreateBtn_861,389,915,450..png"}) Then
+	ElseIf Find({pic:"Idola_CreateBtn_853,393,927,451..png"}) Then
 	'ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png", Dot:"600,413"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_435,185,284,169..png", Dot:"600,413"}) Then
 	
-	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_364,502,452,516..png"}) Then 
-	ElseIf NeedCreateIdola And Find({pic:"Idola_CreatedStatus_466,146,543,156..png", tapMode:DoNothing}) And _
-		(Find({pic:"Idola_MenuDown_936,501,901,488..png"}) Or Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Or Find({pic:"Idola_MenuUp_934,522,910,505..png"}) Or Find({pic:"Idola_MenuDown2_938,508,907,494..png"}))Then
+	
+	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_364,502,452,516..png"}) Then
+	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_360,497,458,521..png"}) Then
+	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_353,498,467,521..png"}) Then
+	
+	ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", tapMode:DoNothing}) And _
+		(Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Or Find({pic:"Idola_MenuUp_934,522,910,505..png"}) Or Find({pic:"Idola_MenuDown2_938,508,907,494..png"}))Then
 		NeedCreateIdola = false   
 	ElseIf Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_CallRescueConfirm_684,508,604,493..png"}) Then
@@ -553,8 +560,9 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_Result_935,33,847,13..png",Dot:"482,499"}) Then
 	ElseIf Find({pic:"Idola_ResultNext_483,492,414,454..png",Dot:"476,491"}) Then
 	ElseIf Find({pic:"Idola_ResultNextBtn_500,507,464,493..png"}) Then
+	ElseIf Find({pic:"Idola_BuildFaild_351,197,520,245..png",dot:"481,381"}) Then
 	
-
+	
 
 	'main Menu - RefreshIdola  
 	ElseIf Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then
@@ -638,6 +646,9 @@ Function IdolaBattle()
 				Find({pic:"Idola_MenuUp_934,522,910,505..png"}) Or _
 				Find({pic:"Idola_MenuDown2_938,508,907,494..png"})) Then
 			DelayRnd 3000, 500
+			If RndRange(0, 3) = 3 Then 
+				NeedCreateIdola = True
+			End If
 		End If
 		
 	ElseIf Find({pic:"Idola_WeekEnd1_218,71,165,58..png",Dot:"491,435"}) Then

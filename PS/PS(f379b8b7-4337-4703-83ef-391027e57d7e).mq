@@ -343,7 +343,6 @@ While True
 	
 	If IsFindQuest Then 
 		MemberCase = "Lv"
-	//ElseIf Find({pic:"SelectSP_906,288,882,279..png"}) Then
 	ElseIf Find({pic:"NoAp_144,22,250,34..png", tapMode:DoNothing}) Then
 		DelayRnd 2000, 1000
 		TapXy 481, 497
@@ -355,15 +354,27 @@ While True
 		ReleaseCapture
 		KeepCapture
 		Find ({pic:"BattleEnd_Next_532,493,571,505..png"})
+		
+//	ElseIf Find({pic:"SelectSP_623,86,914,453..png"}) Then
+//		MemberCase = "Lv"
 	ElseIf Page <> "Quest" And Find({pic:"QuestPage_911,35,818,19..png",TapMode:DoNothing}) Then
 		'Page = "Quest"
-		TapXy 922,503
-	ElseIf Find({pic:"SpEvent_s3_682,322,645,289..png"}) Then
-		MemberCase = "Lv"
+		'open menu?
+		'TapXy 922,503
+		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
+			TapXy 773,325
+		Else 
+			SwipeAB 669,306,669,230
+		End If
+		DelayRnd 1000,500
 	ElseIf Find({pic:"QuestSelect_Event_778,346,645,291..png"}) Then
 	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
 		MemberCase = "Lv"
-		TapXy 663,419
+		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
+			TapXy 720,412
+		Else 
+			SwipeAB 669,306,669,230
+		End If
 		'SwipeAB 796,408,793,148
 	ElseIf Find({pic:"DailyQuestPage_672,5,857,24..png", tapMode:DoNothing}) Then
 		'SwipeAB 796,408,793,148
@@ -424,6 +435,8 @@ While True
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
 	ElseIf Find({pic:"LoginTitle_939,527,883,517..png"}) Then
+	ElseIf Find({pic:"LoginTitle_62,478,109,502..png",dot:"429,349"}) Then
+	
 	ElseIf Find({pic:"EventLogin_468,48,110,26..png"}) Then
 
 	ElseIf Find({pic:"400DL_324,23,536,50..png"}) Then
@@ -439,7 +452,9 @@ While True
 	ElseIf Find({pic:"CampaignMsg_455,429,510,445..png"}) Then
 	
 	ElseIf Find({pic:"Disconnect_511,386,426,371..png"}) Then
-	ElseIf Find({pic:"Disconnect_377,175,485,212..png",Dot:"484,375"}) Then
+	ElseIf Find({pic:"Disconnect_377,175,485,212..png", Dot:"484,375"}) Then
+	ElseIf Find({pic:"TimeOut_373,168,568,227..png", Dot:"574,373"}) Then
+	
 	
 	ElseIf Find({pic:"ContinueBattle_435,253,305,211..png",Dot:"575,442"}) Then
 	
@@ -649,6 +664,9 @@ Function IdolaBattle()
 			If RndRange(0, 3) = 3 Then 
 				NeedCreateIdola = True
 			End If
+		ElseIf Not MenuIsNotOn Then
+			DelayRnd 2000, 5000
+			Find({pic:"MenuQuestBtn_719,416,791,481..png"})
 		End If
 		
 	ElseIf Find({pic:"Idola_WeekEnd1_218,71,165,58..png",Dot:"491,435"}) Then

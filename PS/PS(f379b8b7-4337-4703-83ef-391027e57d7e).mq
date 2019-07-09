@@ -1,23 +1,40 @@
 'Phan.Star
-'phadvAnjain ver 1.2.2
+'phadvAnjain ver 1.2.3
 'update:
-'1.1.1: add TapPicRectIfFind()
-'1.2.0  add Find()
-'		idleTapDelay*10
-'1.2.1  fix find()  Rect bug
-'		add SwipeAB() and support find()
 '1.2.2  find() enhancement
 '		tapMode: Dot
 '		Find Mode: Color
 ' 	    Find param: direct
 '		RndRange func
 '		ShiftXY
+'1.2.3  TryFind() = find() TapMode:DoNothing
+'		Timer Table(  TimerUpdate(),GetTimerInterval(),isTimeOver() )
+'		"s"var  const string / table enum index
+'		MsgXy(),Msg()
+
 
 Randomize
 Dim intX,intY,targetX,targetY,targetX2,targetY2
 Dim tempBool
-Dim lastTapTime
-lastTapTime = TickCount()
+Dim lastTapTime = TickCount()
+
+'-------------------------
+'Timer Table
+Dim Timer,sLastTap
+sLastTap = "sLastTap"
+Timer = {sLastTap:"0"}
+Timer[sLastTap] = TickCount()
+
+Function TimerUpdate(timerName)
+	Timer[timerName] = TickCount()
+	TimerUpdate = Timer[timerName]
+End Function
+Function GetTimerInterval(timerName, intervalMs)
+	GetTimerInterval = (TickCount() - Timer[timerName]) - intervalMs
+End Function
+Function isTimeOver(timerName, intervalMs)
+	isTimeOver = TickCount() - Timer[timerName] > intervalMs
+End Function
 
 '-------------------------
 'Find Func String
@@ -38,7 +55,6 @@ rand = "rand"
 shiftXY = "shiftXY"
 '-----------------------------------------------------------------------------------------
 '------------------------------- anjain advance function ---------------------------------
-
 'ex: "Btn_InTheStoryMenu_Skip_793,29,819,60..png" -> 793,29,819,60
 Function GetFindPicRangeFromFormattedPicName(picName)
     Dim str1
@@ -67,7 +83,10 @@ Sub TapRect(tapX1,tapY1,tapX2,tapY2)
     targetY = tapY1 + (tapY2 - tapY1) * Rnd()
     TapXy targetX,targetY
 End Sub
-
+Function TryFind(p)
+    p[tapMode] = DoNothing
+    TryFind = Find(p)
+End Function
 Function Find(p)
 	Dim FindFuncParam '(rect,Name,direct,fuzzyRate)
     Dim picName
@@ -126,7 +145,7 @@ Function Find(p)
     End If
     
     If p[fuzzyRate] <> null Then 
-    	fuzzyRateTemp = p[fuzzyRate]
+    	fuzzyRateTemp = p[fuzzyRate] + 0.0
         FindFuncParam = FindFuncParam + 0001
     End If
     If p[Direct] <> null Then 
@@ -188,7 +207,7 @@ Function Find(p)
 			Case Rect
 				TapRect tap_x1, tap_y1, tap_x2, tap_y2
 			Case dropAB
-				SwipeAB tap_x1, tap_y1, tap_x2, tap_y2
+				SwipeAB tap_x1, tap_y1, tap_x2, tap_y2, 100
 			Case Dot
 				TapXy tap_x1, tap_y1
 			Case tapFindXY
@@ -252,7 +271,10 @@ Sub TapXy(tapX, tapY)
     TracePrint "Tap " & targetX & "," & targetY
     Delay 10 + 15 * Rnd()
 End Sub
-Sub SwipeAB(swipeAx, swipeAy,swipeBx,swipeBy)
+Sub SwipeAB(swipeAx,swipeAy,swipeBx,swipeBy,keepTimeMs)
+    if keepTimeMs = 0 
+        keepTimeMs = 100
+    end if
     targetX = int(swipeAx + 5 * Rnd())
     targetY = int(swipeAy + 5 * Rnd())
     targetX2 = int(swipeBx + 5 * Rnd())
@@ -260,9 +282,9 @@ Sub SwipeAB(swipeAx, swipeAy,swipeBx,swipeBy)
     Dim WakuUpTimeMS
     WakuUpTimeMS = 10 + Sqr(TickCount() - lastTapTime) * 10 * Rnd()
     Delay WakuUpTimeMS
-    Swipe targetX, targetY, targetX2, targetY2
+    Swipe targetX, targetY, targetX2, targetY2, keepTimeMs
     lastTapTime = TickCount()
-    TracePrint "Swipe " & targetX & "," & targetY & " to " &  targetX2 & "," & targetY2
+    TracePrint "Swipe " & targetX & "," & targetY & " to " &  targetX2 & "," & targetY2 & ",keepMs:" & keepTimeMs
     Delay 10 + 15 * Rnd()
 End Sub
 
@@ -270,6 +292,27 @@ Sub PrintIfFind(msgStr)
     If intX > -1 And intY > -1 Then
         TracePrint msgStr
     End If
+End Sub
+Sub Msg(msgStr, showMs, posStrXY)
+	Dim posX,posY,ArrTemp
+    If posStrXY <> null Then 
+        ArrTemp = SplitComma(posStrXY)
+        If UBound(ArrTemp) = 1 Then 
+        	posX = ArrTemp(0)
+        	posY = ArrTemp(1)
+       	End If
+    End If
+    
+    If posY <> null Then 
+		ShowMessage msgStr, showMs, posX, posY
+	else
+		ShowMessage msgStr, showMs
+    End If
+	TracePrint msgStr
+End Sub
+Sub MsgXy(msgStr,showMs,posX,posY)
+	ShowMessage msgStr, showMs, posX, posY
+	TracePrint msgStr
 End Sub
 Sub DelayRnd(BaseDelay,RndDelay)
     Delay BaseDelay + RndDelay*Rnd()
@@ -279,10 +322,10 @@ Function RndRange(min,max)
 End Function
 
 
-
-
 '-----------------------------------------------------------------------------------------
-// Main Loop
+' Main Loop
+
+
 Dim FriendCase
 FriendCase = "Friend_Blacky"
 FriendCase = "Friend_Allevne"
@@ -357,23 +400,26 @@ While True
 		
 //	ElseIf Find({pic:"SelectSP_623,86,914,453..png"}) Then
 //		MemberCase = "Lv"
+
 	ElseIf Page <> "Quest" And Find({pic:"QuestPage_911,35,818,19..png",TapMode:DoNothing}) Then
 		'Page = "Quest"
 		'open menu?
-		'TapXy 922,503
-		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
-			TapXy 773,325
-		Else 
-			SwipeAB 669,306,669,230
-		End If
+		TapXy 922,503
+		
+		'SelectQuest
+//		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
+//			TapXy 773,325
+//		Else 
+//			SwipeAB 669,306,669,230
+//		End If
 		DelayRnd 1000,500
-	ElseIf Find({pic:"QuestSelect_Event_778,346,645,291..png"}) Then
+	'ElseIf Find({pic:"QuestSelect_Event_778,346,645,291..png"}) Then
 	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
 		MemberCase = "Lv"
 		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
 			TapXy 720,412
 		Else 
-			SwipeAB 669,306,669,230
+			SwipeAB 669,306,669,230,100
 		End If
 		'SwipeAB 796,408,793,148
 	ElseIf Find({pic:"DailyQuestPage_672,5,857,24..png", tapMode:DoNothing}) Then
@@ -393,6 +439,8 @@ While True
 		FriendCase = "Jasupa100t4"
 		FriendCase = "ChaosWithOutFriend"
 	End If
+	
+	Arena()
 
 	'Globle Friend Select ---------------------------------------------
 	
@@ -408,6 +456,8 @@ While True
 	ElseIf Find({pic:"BattleResult_Items_929,30,847,13..png", Dot:"496,499"}) Then
 	ElseIf Find({pic:"BattleEnd_again_374,505,338,495..png"}) Then
 	ElseIf Find({pic:"BattleEnd_DoNotPostIdola_390,508,308,495..png"}) Then
+	ElseIf Find({pic:"BattleEnd_Gift_168,489,223,526..png"}) Then
+	
 	
 	
 	
@@ -445,6 +495,7 @@ While True
 	ElseIf Find({pic:"SpLogin_771,34,553,28..png",findRect:"149,34,807,28"}) Then
 	ElseIf Find({pic:"SpLogin_110,103,45,65..png",Dot:"483,504"}) Then
 	ElseIf Find({pic:"SpLoginJagar_220,19,538,56..png"}) Then
+	ElseIf Find({pic:"SpLogin_112,27,259,57..png"}) Then
 	
 	
 	ElseIf Find({pic:"LeUp_197,350,299,379..png"}) Then
@@ -453,6 +504,8 @@ While True
 	
 	ElseIf Find({pic:"Disconnect_511,386,426,371..png"}) Then
 	ElseIf Find({pic:"Disconnect_377,175,485,212..png", Dot:"484,375"}) Then
+	ElseIf Find({pic:"ConnectFaild_557,371,634,390..png"}) Then
+	
 	ElseIf Find({pic:"TimeOut_373,168,568,227..png", Dot:"574,373"}) Then
 	
 	
@@ -521,6 +574,30 @@ Function MemberSelect(memberCase)
 		MemberSelectSuccess = Find({color:NoSelectColor,findRect:MemberTable[memberCase]})
 	End If
 	MemberSelect = MemberSelectSuccess
+End Function
+Function Arena()
+	Arena = true
+	If false Then
+	
+	
+	ElseIf Find({pic:"Arena_StrongEnemy_623,194,705,294..png"}) Then
+
+	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Then
+	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png",Dot:"716,238"}) Then
+	
+	ElseIf Find({pic:"Arena_SelectCard_321,68,460,103..png",Dot:"456,259"}) Then
+	ElseIf Find({pic:"Arena_BattleStart_430,471,526,498..png"}) Then
+	ElseIf Find({pic:"Arena_BattleEndReport_274,360,311,397..png",dot:"494,512"}) Then
+	ElseIf Find({pic:"Arena_WeekBound_35,18,220,44..png", Dot:"467,493"}) Then 
+	ElseIf Find({pic:"Arena_RoundReport_440,32,521,73..png"}) Then
+	
+	ElseIf Find({pic:"..png"}) Then
+	ElseIf Find({pic:"..png"}) Then
+	'ElseIf Find({pic:"..png"}) Then
+
+	Else 
+		Arena = False
+	End If
 End Function
 
 Function IdolaBattle()

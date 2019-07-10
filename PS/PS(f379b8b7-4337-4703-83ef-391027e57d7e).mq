@@ -483,6 +483,7 @@ While True
 	
 	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
+	ElseIf Find({pic:"NewDay4_SupportExp_0710_400,28,564,45..png"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
 	ElseIf Find({pic:"LoginTitle_939,527,883,517..png"}) Then
 	ElseIf Find({pic:"LoginTitle_62,478,109,502..png",dot:"429,349"}) Then
@@ -582,19 +583,23 @@ Function Arena()
 	
 	ElseIf Find({pic:"Arena_StrongEnemy_623,194,705,294..png"}) Then
 
-	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Then
-	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png",Dot:"716,238"}) Then
+	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png",Dot:"277,125"}) Then
+	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png", Dot:"716,238"}) Then
+	ElseIf Find({pic:"Arena_TeamIndex5Select_271,118,288,134..png", Dot:"716,238"}) Then
+	
+	
 	
 	ElseIf Find({pic:"Arena_SelectCard_321,68,460,103..png",Dot:"456,259"}) Then
 	ElseIf Find({pic:"Arena_BattleStart_430,471,526,498..png"}) Then
 	ElseIf Find({pic:"Arena_BattleEndReport_274,360,311,397..png",dot:"494,512"}) Then
 	ElseIf Find({pic:"Arena_WeekBound_35,18,220,44..png", Dot:"467,493"}) Then 
 	ElseIf Find({pic:"Arena_RoundReport_440,32,521,73..png"}) Then
+	ElseIf Find({pic:"Arena_NoPoint_150,89,267,121..png", Dot:"362,414"}) Then
+		Delay 3000
+		tapxy 923,506
 	
-	ElseIf Find({pic:"..png"}) Then
-	ElseIf Find({pic:"..png"}) Then
-	'ElseIf Find({pic:"..png"}) Then
-
+	
+	
 	Else 
 		Arena = False
 	End If
@@ -607,13 +612,13 @@ Function IdolaBattle()
 	Dim MenuIsNotOn
 	'MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
 	'MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_935,506,905,491..png", tapMode:DoNothing})
-	MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_855,519,785,502..png", tapMode:DoNothing})
-	
+	'MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_855,519,785,502..png", tapMode:DoNothing})
+	MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_733,496,836,526..png", tapMode:DoNothing})
 	'Dim IsIdolaPage
 	'IsIdolaPage = Find({pic:"IdolaPage_137,58,208,83..png",tapMode:DoNothing})
 	
 
-	If NeedCreateIdola And Find({pic:"Idola_PlayViewEnd_151,62,292,78..png", Dot:"582,442"}) Then 
+	If NeedCreateIdola And Find({pic:"Idola_PlayViewEnd_152,61,280,88..png", Dot:"582,442"}) Then 
 	ElseIf Find({pic:"Idola_CreateNewIdola_850,369,792,358..png"}) Then
 	ElseIf Find({pic:"Idola_PlayViewEnd_870,373,766,359..png"}) Then
 		NeedCreateIdola = true
@@ -624,9 +629,9 @@ Function IdolaBattle()
 	
 	ElseIf Find({pic:"Idola_CreateBtn_861,389,915,450..png"}) Then
 	ElseIf Find({pic:"Idola_CreateBtn_853,393,927,451..png"}) Then
+	ElseIf Find({pic:"Idola_CreateBtn_862,389,919,447..png"}) Then
 	'ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png", Dot:"600,413"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_435,185,284,169..png", Dot:"600,413"}) Then
-	
 	
 	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_364,502,452,516..png"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_360,497,458,521..png"}) Then
@@ -638,12 +643,12 @@ Function IdolaBattle()
 	ElseIf Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_CallRescueConfirm_684,508,604,493..png"}) Then
 	ElseIf Find({pic:"BattleEnd_CallRescueResult_684,508,604,493..png"}) Then
-	ElseIf Find({pic:"idola_End_752,84,846,414..png", tapMode:DoNothing}) Or _
-			Find({pic:"Idola_End_852,136,754,91..png", tapMode:DoNothing}) Then
+	ElseIf Find({pic:"idola_End_758,87,862,141..png", tapMode:DoNothing}) Then
 		TapXy 452, 491
 		NeedCreateIdola = true
 		DelayRnd 2000, 1000
-	ElseIf Find({pic:"Idola_KillReportTitle_117,99,211,126..png"}) Then
+	ElseIf Find({pic:"Idola_KillReportTitle_0709_139,101,231,128..png", tapMode:DoNothing}) Then
+	'ElseIf Find({pic:"Idola_KillReportTitle_117,99,211,126..png", tapMode:DoNothing}) Then
 		Find({pic:"Idola_KillReport_452,491,508,504..png"})
 
 	ElseIf Find({pic:"Idola_TargetHasBeenDie_452,372,507,384..png"}) Then
@@ -661,7 +666,8 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
 	
 	
-	ElseIf Find({pic:"Idola_HaveEnergy_721,82,729,91..png", tapMode:DoNothing}) Then 
+	ElseIf Find({pic:"Idola_HaveEnergy_721,82,729,91..png", tapMode:DoNothing}) Or _
+	       Find({pic:"Idola_HaveEnergy_0709_734,75,751,93..png", tapMode:DoNothing}) Then 
 		'Class S=1000 A=100 Rare+=10 Plus+=1
 		Dim L1Class
 		L1Class = 0
@@ -702,15 +708,13 @@ Function IdolaBattle()
 		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_762,108,783,122..png"}) Then
 		
 		Else 
-			If Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Then 
-				TracePrint "Delay for refresh Idola List"
-				DelayRnd 3000,10000
-			ElseIf Find({pic:"Idola_MenuIsNotOn_855,519,785,502..png",dot:"920,500"}) Then 
-				TracePrint "Delay for refresh Idola List"
+			If MenuIsNotOn Then 
+				TracePrint "Delay for refresh Idola List" 
+				TapXy 920,500
 				DelayRnd 3000,10000
 			End If
 		End If
-	ElseIf Find({pic:"Idola_NoEnergy_722,81,729,92..png",tapMode:DoNothing}) Then
+	ElseIf Find({pic:"Idola_NoEnergy_734,76,751,93..png",tapMode:DoNothing}) Then
 		DelayRnd 1000, 5000
 		
 		
@@ -732,15 +736,15 @@ Function IdolaBattle()
 			DelayRnd 1000, 500
 			TapXy 471,377
 			DelayRnd 1000, 500
-		ElseIf 	MenuIsNotOn And _
-				(Find({pic:"Idola_MenuDown_936,501,901,488..png"}) Or _
-				Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Or _
-				Find({pic:"Idola_MenuUp_934,522,910,505..png"}) Or _
-				Find({pic:"Idola_MenuDown2_938,508,907,494..png"})) Then
-			DelayRnd 3000, 500
+		ElseIf MenuIsNotOn Then
+			TracePrint "Delay for refresh Idola List" 
+			TapXy 920,500
+			DelayRnd 3000,10000
 			If RndRange(0, 3) = 3 Then 
+				TracePrint "Check Idola Status"
 				NeedCreateIdola = True
 			End If
+		'TODO :  UI GotoQuest
 		ElseIf Not MenuIsNotOn Then
 			DelayRnd 2000, 5000
 			Find({pic:"MenuQuestBtn_719,416,791,481..png"})

@@ -35,7 +35,6 @@ End Function
 Function isTimeOver(timerName, intervalMs)
 	isTimeOver = TickCount() - Timer[timerName] > intervalMs
 End Function
-
 '-------------------------
 'Find Func String
 Dim pic,findRect,tapMode,Rect,dropAB,DoNothing,tapFindXY,fuzzyRate,findDelay,Dot,color,Direct,rand,shiftXY
@@ -347,6 +346,7 @@ Page = ""
 
 Dim ChargeEnergy
 'ChargeEnergy = true
+RunApp "com.sega.idola"
 
 While True
     //work
@@ -483,7 +483,7 @@ While True
 	
 	ElseIf Find({pic:"NewDay3_MonthCard_279,26,451,50..png"}) Then
 	ElseIf Find({pic:"NewDay4_SupportExp_464,489,500,502..png"}) Then
-	ElseIf Find({pic:"NewDay4_SupportExp_0710_400,28,564,45..png"}) Then
+	ElseIf Find({pic:"NewDay4_SupportExp_0710_400,28,564,45..png",dot:"481,497"}) Then
 	ElseIf Find({pic:"NewDay5_News_897,16,919,35..png"}) Then
 	ElseIf Find({pic:"LoginTitle_939,527,883,517..png"}) Then
 	ElseIf Find({pic:"LoginTitle_62,478,109,502..png",dot:"429,349"}) Then

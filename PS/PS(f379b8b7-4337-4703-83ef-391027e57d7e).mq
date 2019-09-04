@@ -610,13 +610,7 @@ Function IdolaBattle()
 	IdolaBattleHasFind = True
 	
 	Dim MenuIsNotOn
-	'MenuIsNotOn = Find({pic:"Idola_ShowMunu_906,505,938,528..png", tapMode:DoNothing})
-	'MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_935,506,905,491..png", tapMode:DoNothing})
-	'MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_855,519,785,502..png", tapMode:DoNothing})
 	MenuIsNotOn = Find({pic:"Idola_MenuIsNotOn_733,496,836,526..png", tapMode:DoNothing})
-	'Dim IsIdolaPage
-	'IsIdolaPage = Find({pic:"IdolaPage_137,58,208,83..png",tapMode:DoNothing})
-	
 
 	If NeedCreateIdola And Find({pic:"Idola_PlayViewEnd_152,61,280,88..png", Dot:"582,442"}) Then 
 	ElseIf Find({pic:"Idola_CreateNewIdola_850,369,792,358..png"}) Then
@@ -636,10 +630,8 @@ Function IdolaBattle()
 	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_364,502,452,516..png"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_360,497,458,521..png"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_Status_353,498,467,521..png"}) Then
-	
-	ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", tapMode:DoNothing}) And _
-		(Find({pic:"Idola_ShowMunu_906,505,938,528..png"}) Or Find({pic:"Idola_MenuUp_934,522,910,505..png"}) Or Find({pic:"Idola_MenuDown2_938,508,907,494..png"}))Then
-		NeedCreateIdola = false   
+
+		
 	ElseIf Find({pic:"BattleEnd_CallRescue_441,491,522,505..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_CallRescueConfirm_684,508,604,493..png"}) Then
 	ElseIf Find({pic:"BattleEnd_CallRescueResult_684,508,604,493..png"}) Then
@@ -665,9 +657,11 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then
 	ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
 	
+	ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", Dot:"921,509"}) Then
+		NeedCreateIdola = false
 	
-	ElseIf Find({pic:"Idola_HaveEnergy_721,82,729,91..png", tapMode:DoNothing}) Or _
-	       Find({pic:"Idola_HaveEnergy_0709_734,75,751,93..png", tapMode:DoNothing}) Then 
+	
+	ElseIf Find({pic:"Idola_HaveEnergy_738,78,747,90..png", tapMode:DoNothing}) Then 
 		'Class S=1000 A=100 Rare+=10 Plus+=1
 		Dim L1Class
 		L1Class = 0

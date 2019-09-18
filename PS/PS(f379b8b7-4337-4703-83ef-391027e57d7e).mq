@@ -16,7 +16,7 @@
 Randomize
 Dim intX,intY,targetX,targetY,targetX2,targetY2
 Dim tempBool
-Dim lastTapTime = TickCount()
+'Dim lastTapTime = TickCount()
 
 '-------------------------
 'Timer Table
@@ -263,10 +263,10 @@ Sub TapXy(tapX, tapY)
     targetX = int(tapX + 5 * Rnd())
     targetY = int(tapY + 5 * Rnd())
     Dim WakuUpTimeMS
-    WakuUpTimeMS = 10 + Sqr(TickCount() - lastTapTime) * 10 * Rnd()
+    WakuUpTimeMS = 10 + Sqr(TickCount() - Timer[sLastTap]) * 10 * Rnd()
     Delay WakuUpTimeMS
     Tap targetX, targetY
-    lastTapTime = TickCount()
+    Timer[sLastTap] = TickCount()
     TracePrint "Tap " & targetX & "," & targetY
     Delay 10 + 15 * Rnd()
 End Sub
@@ -279,10 +279,10 @@ Sub SwipeAB(swipeAx,swipeAy,swipeBx,swipeBy,keepTimeMs)
     targetX2 = int(swipeBx + 5 * Rnd())
     targetY2 = int(swipeBy + 5 * Rnd())
     Dim WakuUpTimeMS
-    WakuUpTimeMS = 10 + Sqr(TickCount() - lastTapTime) * 10 * Rnd()
+    WakuUpTimeMS = 10 + Sqr(TickCount() - Timer[sLastTap]) * 10 * Rnd()
     Delay WakuUpTimeMS
     Swipe targetX, targetY, targetX2, targetY2, keepTimeMs
-    lastTapTime = TickCount()
+    Timer[sLastTap] = TickCount()
     TracePrint "Swipe " & targetX & "," & targetY & " to " &  targetX2 & "," & targetY2 & ",keepMs:" & keepTimeMs
     Delay 10 + 15 * Rnd()
 End Sub
@@ -491,6 +491,8 @@ While True
 	ElseIf Find({pic:"EventLogin_468,48,110,26..png"}) Then
 
 	ElseIf Find({pic:"400DL_324,23,536,50..png"}) Then
+	
+	ElseIf Find({pic:"SpLogin_111,24,152,52..png"}) Then
 	ElseIf Find({pic:"SPLogin_324,26,484,47..png"}) Then
 	ElseIf Find({pic:"SPLogin_431,47,273,26..png"}) Then
 	ElseIf Find({pic:"SpLogin_771,34,553,28..png",findRect:"149,34,807,28"}) Then
@@ -661,7 +663,8 @@ Function IdolaBattle()
 		NeedCreateIdola = false
 	
 	
-	ElseIf Find({pic:"Idola_HaveEnergy_738,78,747,90..png", tapMode:DoNothing}) Then 
+	ElseIf Find({pic:"Idola_HaveEnergy_738,78,747,90..png", tapMode:DoNothing}) _
+			Or TryFind({pic:"Idola_HaveEnergy_738,79,749,90..png"}) Then 
 		'Class S=1000 A=100 Rare+=10 Plus+=1
 		Dim L1Class
 		L1Class = 0

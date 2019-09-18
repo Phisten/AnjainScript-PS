@@ -324,6 +324,18 @@ End Function
 '-----------------------------------------------------------------------------------------
 ' Main Loop
 
+Dim UI_questListSelect _
+,UI_questListDaily _
+,UI_questListSp _
+,UI_questTeamIndex _
+,UI_questTeamColor _
+,UI_idolaTeamIndex _
+,UI_idolaTeamColor _
+,UI_arenaTeamIndex _
+,UI_arenaTeamColor _
+,UI_resetAppTime
+UiInit()
+
 
 Dim FriendCase
 FriendCase = "Friend_Blacky"
@@ -346,7 +358,8 @@ Page = ""
 
 Dim ChargeEnergy
 'ChargeEnergy = true
-RunApp "com.sega.idola"
+Dim AppName = "com.sega.idola"
+RunApp AppName
 
 While True
     //work
@@ -514,11 +527,18 @@ While True
 	
 	ElseIf Find({pic:"ContinueBattle_435,253,305,211..png",Dot:"575,442"}) Then
 	
+	ElseIf isTimeOver(sLastTap, UI_resetAppTime * 60000) Then
+		TracePrint "AppStuck, Rerest"
+		KillApp AppName
+		Delay 8000
+		RunApp AppName
 	End If
 	
 	ReleaseCapture
     '--------
-    
+
+//    TracePrint UI_resetAppTime
+//    TracePrint Timer[sLastTap]
     
     
     '--------
@@ -756,4 +776,15 @@ Function IdolaBattle()
 	IdolaBattle = IdolaBattleHasFind
 End Function
 
-
+Sub UiInit()
+	UI_questListSelect = CInt(ReadUIConfig("questListSelect", "0"))
+	UI_questListDaily = CInt(ReadUIConfig("questListDaily", "0"))
+	UI_questListSp = CInt(ReadUIConfig("questListSp", "0"))
+	UI_questTeamIndex = CInt(ReadUIConfig("questTeamIndex", "0"))
+	UI_questTeamColor = CInt(ReadUIConfig("questTeamColor", "0"))
+	UI_idolaTeamIndex = CInt(ReadUIConfig("idolaTeamIndex", "0"))
+	UI_idolaTeamColor = CInt(ReadUIConfig("idolaTeamColor", "0"))
+	UI_arenaTeamIndex = CInt(ReadUIConfig("arenaTeamIndex", "0"))
+	UI_arenaTeamColor = CInt(ReadUIConfig("arenaTeamColor", "0"))
+	UI_resetAppTime = CInt(ReadUIConfig("resetAppTime", "0"))
+End Sub

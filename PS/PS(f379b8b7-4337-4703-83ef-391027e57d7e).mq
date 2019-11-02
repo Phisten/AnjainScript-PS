@@ -353,8 +353,10 @@ MemberCase = "Lv"
 Dim NeedCreateIdola
 NeedCreateIdola = true
 
-Dim Page
-Page = ""
+Dim PartyCase = "5"
+// 0:unselect 1:Fire 2:Water 3:Wind 4:idola 5:LV 6:autoPvP 7:SpPvP 8
+Dim PartyColorCase = "0"
+// 0:law 1:chaos
 
 Dim ChargeEnergy
 'ChargeEnergy = true
@@ -399,6 +401,8 @@ While True
 	
 	If IsFindQuest Then 
 		MemberCase = "Lv"
+		PartyCase = UI_questTeamIndex
+		PartyColorCase = UI_questTeamColor
 	ElseIf Find({pic:"NoAp_144,22,250,34..png", tapMode:DoNothing}) Then
 		DelayRnd 2000, 1000
 		TapXy 481, 497
@@ -414,7 +418,7 @@ While True
 //	ElseIf Find({pic:"SelectSP_623,86,914,453..png"}) Then
 //		MemberCase = "Lv"
 
-	ElseIf Page <> "Quest" And Find({pic:"QuestPage_911,35,818,19..png",TapMode:DoNothing}) Then
+	ElseIf Find({pic:"QuestPage_911,35,818,19..png",TapMode:DoNothing}) Then
 		'Page = "Quest"
 		'open menu?
 		TapXy 922,503
@@ -429,6 +433,8 @@ While True
 	'ElseIf Find({pic:"QuestSelect_Event_778,346,645,291..png"}) Then
 	ElseIf Find({pic:"SpQuestTitle_663,11,928,33..png", tapMode:DoNothing}) Then
 		MemberCase = "Lv"
+		PartyCase = UI_questTeamIndex
+		PartyColorCase = UI_questTeamColor
 		If Find({color:"80E0FF", findRect:"944,455,946,463"}) Then 
 			TapXy 720,412
 		Else 
@@ -449,30 +455,22 @@ While True
 	IdolaBattleHasFind = IdolaBattle()
 	If IdolaBattleHasFind Then 
 		MemberCase = "Best"
-		FriendCase = "Jasupa100t4"
+		PartyCase = UI_idolaTeamIndex
+		PartyColorCase = UI_idolaTeamColor
 		FriendCase = "ChaosWithOutFriend"
-	End If
+	ElseIf Arena() Then
 	
-	Arena()
-
 	'Globle Friend Select ---------------------------------------------
-	
-	If Not IdolaBattleHasFind Then 
-		If MemberSelect(MemberCase) Then 
-		ElseIf FriendSelect(FriendCase) Then 
-		End If
-	End If
-	
-	If  Find({pic:"BattleReady_StartBattleConfirmBtn_575,429,614,447..png"}) Then 
+	ElseIf PartySelect(PartyCase) Then 
+	ElseIf FriendSelect(FriendCase) Then 
+
+	ElseIf Find({pic:"BattleReady_StartBattleConfirmBtn_575,429,614,447..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_NextBtn_460,490,500,508..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_FirstResult_438,484,549,505..png"}) Then
 	ElseIf Find({pic:"BattleResult_Items_929,30,847,13..png", Dot:"496,499"}) Then
 	ElseIf Find({pic:"BattleEnd_again_374,505,338,495..png"}) Then
 	ElseIf Find({pic:"BattleEnd_DoNotPostIdola_390,508,308,495..png"}) Then
 	ElseIf Find({pic:"BattleEnd_Gift_168,489,223,526..png"}) Then
-	
-	
-	
 	
 	'Globle BattleReady - ---------------------------------------------
 	'Todo Team Select
@@ -532,6 +530,7 @@ While True
 		KillApp AppName
 		Delay 8000
 		RunApp AppName
+		TimerUpdate(sLastTap)
 	End If
 	
 	ReleaseCapture
@@ -584,19 +583,68 @@ Function FriendSelect(FriendCase)
 		Find {pic:"BattleReady_SelectFriendTitle_396,17,558,44..png", dropAB:"789,341,758,260", FindDelay:900}
 	End If
 End Function
-Function MemberSelect(memberCase)
-	Dim MemberTable
-	MemberTable = {"4Wind":"","4Fire":"","4Water":"218,108","Best":"240,108","Lv":"263,108"}
-	'Dim selectedColor
-	'selectedColor = "333B33"
-	Dim NoSelectColor
-	NoSelectColor = "D7F5FF"
-	
-	Dim MemberSelectSuccess
-	If Find({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png", tapMode:DoNothing}) Then 
-		MemberSelectSuccess = Find({color:NoSelectColor,findRect:MemberTable[memberCase]})
+
+
+Function PartySelect(PartyIndex)
+	Dim PartySelectSuccess = False
+	If TryFind({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}) Then 
+
+		Dim PartyTable = {"0":"","1":"176,100","2":"198,100","3":"221,100","4":"243,100","5":"266,100","6":"288,100","7":"311,100","8":"334,100"}
+		Dim selectedColorTable = {"0":"","1":"608C83","2":"66A998","3":"66A998","4":"66A998","5":"5B6C6C","6":"619A8C","7":"526363","8":"48615C"}
+		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF"}
+		
+		If IsNumeric(PartyIndex) Then 
+			PartyIndex = CStr(PartyIndex)
+		End If
+		Dim partyPos = PartyTable[PartyIndex]
+		
+		TracePrint "partyPos:" & partyPos & ",Index:" & PartyIndex
+		If partyPos = "" Or partyPos = null Then 
+			TracePrint "PartySelect partyPos"
+		ElseIf Find({color:unSelectColorTable[PartyIndex], findRect:partyPos}) Then 
+			PartySelectSuccess = True
+		ElseIf TryFind({color:selectedColorTable[PartyIndex], findRect:partyPos}) Then
+			PartySelectSuccess = True
+			Delay 2000
+			Find({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"})
+		End If
+
 	End If
-	MemberSelect = MemberSelectSuccess
+	PartySelect = PartySelectSuccess
+End Function
+Function ArenaPartySelect(PartyIndex,ColorIndex)
+	Dim PartySelectSuccess = False
+	If TryFind({pic:"Arena_CardCheck_856,284,890,315..png"}) Then 
+
+		Dim PartyTable = {"0":"","1":"128,125","2":"158,125","3":"188,125","4":"218,125","5":"248,125","6":"278,125","7":"308,125","8":"338,125"}
+		Dim selectedColorTable = {"0":"","1":"436962","2":"436962","3":"436962","4":"436962","5":"436962","6":"436962","7":"436962","8":"436962"}
+		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF"}
+		
+		If IsNumeric(PartyIndex) Then 
+			PartyIndex = CStr(PartyIndex)
+		End If
+		Dim partyPos = PartyTable[PartyIndex]
+		
+		TracePrint "ArenaPartyPos:" & partyPos & ",Index:" & PartyIndex
+		If partyPos = "" Or partyPos = null Then 
+			TracePrint "ArenaPartySelect partyPos"
+		ElseIf Find({color:unSelectColorTable[PartyIndex], findRect:partyPos}) Then 
+			PartySelectSuccess = True
+		ElseIf TryFind({color:selectedColorTable[PartyIndex], findRect:partyPos}) Then
+			PartySelectSuccess = True
+			If ColorIndex = 0 Then 
+				//Law
+				Find {pic:"Arena_PartyLaw_327,431,377,448..png",Dot:"244,326"}
+			ElseIf ColorIndex = 1 Then
+				//Chaos
+				Find {pic:"Arena_PartyChaos_326,430,381,447..png",Dot:"244,326"}
+			Else
+				TapXy 716,238
+			End If
+			Delay 1300
+		End If
+	End If
+	ArenaPartySelect = PartySelectSuccess
 End Function
 Function Arena()
 	Arena = true
@@ -605,11 +653,14 @@ Function Arena()
 	
 	ElseIf Find({pic:"Arena_StrongEnemy_623,194,705,294..png"}) Then
 
-	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png",Dot:"277,125"}) Then
-	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png", Dot:"716,238"}) Then
-	ElseIf Find({pic:"Arena_TeamIndex5Select_271,118,288,134..png", Dot:"716,238"}) Then
-	
-	
+//UI_arenaTeamColor
+//	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png",Dot:"277,125"}) Then
+//	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png", Dot:"716,238"}) Then
+//	ElseIf Find({pic:"Arena_TeamIndex5Select_271,118,288,134..png", Dot:"716,238"}) Then
+	ElseIf TryFind({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Or _
+		   TryFind({pic:"Arena_TeamIndex5Select_257,110,309,143..png"}) Or _
+		   TryFind({pic:"Arena_TeamIndex5Select_271,118,288,134..png"}) Then
+		   ArenaPartySelect(UI_arenaTeamIndex,UI_arenaTeamIndex)
 	
 	ElseIf Find({pic:"Arena_SelectCard_321,68,460,103..png",Dot:"456,259"}) Then
 	ElseIf Find({pic:"Arena_BattleStart_430,471,526,498..png"}) Then
@@ -643,9 +694,10 @@ Function IdolaBattle()
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateIdola_691,106,746,116..png", Dot:"696,452"}) Then
 	
 	
-	ElseIf Find({pic:"Idola_CreateBtn_861,389,915,450..png"}) Then
-	ElseIf Find({pic:"Idola_CreateBtn_853,393,927,451..png"}) Then
-	ElseIf Find({pic:"Idola_CreateBtn_862,389,919,447..png"}) Then
+	ElseIf Find({pic:"Idola_CreateBtn_855,378,927,453..png"}) Then
+//	ElseIf Find({pic:"Idola_CreateBtn_861,389,915,450..png"}) Then
+//	ElseIf Find({pic:"Idola_CreateBtn_853,393,927,451..png"}) Then
+//	ElseIf Find({pic:"Idola_CreateBtn_862,389,919,447..png"}) Then
 	'ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png", Dot:"600,413"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_435,185,284,169..png", Dot:"600,413"}) Then
 	
@@ -662,7 +714,6 @@ Function IdolaBattle()
 		NeedCreateIdola = true
 		DelayRnd 2000, 1000
 	ElseIf Find({pic:"Idola_KillReportTitle_0709_139,101,231,128..png", tapMode:DoNothing}) Then
-	'ElseIf Find({pic:"Idola_KillReportTitle_117,99,211,126..png", tapMode:DoNothing}) Then
 		Find({pic:"Idola_KillReport_452,491,508,504..png"})
 
 	ElseIf Find({pic:"Idola_TargetHasBeenDie_452,372,507,384..png"}) Then
@@ -683,8 +734,10 @@ Function IdolaBattle()
 		NeedCreateIdola = false
 	
 	
-	ElseIf Find({pic:"Idola_HaveEnergy_738,78,747,90..png", tapMode:DoNothing}) _
-			Or TryFind({pic:"Idola_HaveEnergy_738,79,749,90..png"}) Then 
+	ElseIf TryFind({pic:"Idola_HaveEnergy_736,78,809,91.png"}) Then 
+		PartyCase = "idola"
+		MemberCase = "best"
+		
 		'Class S=1000 A=100 Rare+=10 Plus+=1
 		Dim L1Class
 		L1Class = 0

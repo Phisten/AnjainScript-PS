@@ -398,7 +398,7 @@ While True
 	End If
 */
 	
-	
+	Dim questNotTap = false
 	If IsFindQuest Then 
 		MemberCase = "Lv"
 		PartyCase = UI_questTeamIndex
@@ -446,6 +446,11 @@ While True
 		'roll
 		TapXy 200,319
 	'ElseIf Find({pic:"QuestSelect_Daily_835,226,703,189..png"}) Then
+	Else 
+		questNotTap = true
+	End If
+	If questNotTap = false Then 
+		Goto LoopEnd
 	End If
 
 	'TracePrint FriendCase
@@ -486,6 +491,10 @@ While True
     'Global
     
 	ElseIf Find({pic:"MissionList_178,34,36,21..png",Dot:"467,494"}) Then
+	ElseIf Find({pic:"Kacha_ArenaCoin5000_525,421,563,447..png",Dot:"920,508"}) Then
+	ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_537,481,561,500..png"}) Then
+	ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_NoCoin_530,478,563,505..png",Dot:"68,508"}) Then
+	
 	
 	
 	ElseIf Find({pic:"NewDay1_453,435,511,449..png"}) Then 
@@ -533,6 +542,8 @@ While True
 		TimerUpdate(sLastTap)
 	End If
 	
+	
+	Rem LoopEnd
 	ReleaseCapture
     '--------
 
@@ -670,6 +681,7 @@ Function Arena()
 	ElseIf Find({pic:"Arena_NoPoint_150,89,267,121..png", Dot:"362,414"}) Then
 		Delay 3000
 		tapxy 923,506
+	ElseIf Find({pic:"Arena_SpMission_58,86,219,126..png", Dot:"462,499"}) Then
 	
 	
 	

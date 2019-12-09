@@ -491,9 +491,13 @@ While True
     'Global
     
 	ElseIf Find({pic:"MissionList_178,34,36,21..png",Dot:"467,494"}) Then
-	ElseIf Find({pic:"Kacha_ArenaCoin5000_525,421,563,447..png",Dot:"920,508"}) Then
-	ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_537,481,561,500..png"}) Then
-	ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_NoCoin_530,478,563,505..png",Dot:"68,508"}) Then
+	//ElseIf Find({pic:"Kacha_ArenaCoin5000_525,421,563,447..png",Dot:"920,508"}) Then
+	ElseIf Find({pic:"Kacha_10_571,440,635,468..png"}) Then
+	ElseIf TryFind({pic:"Kacha_10_Clear_569,439,612,464..png"}) Then
+		Find({pic:"Return_67,504,105,521..png"})
+	//ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_537,481,561,500..png"}) Then
+	//ElseIf Find({pic:"Kacha_ArenaCoin5000Continue_NoCoin_530,478,563,505..png", Dot:"68,508"}) Then
+	
 	
 	
 	
@@ -625,7 +629,8 @@ Function PartySelect(PartyIndex)
 End Function
 Function ArenaPartySelect(PartyIndex,ColorIndex)
 	Dim PartySelectSuccess = False
-	If TryFind({pic:"Arena_CardCheck_856,284,890,315..png"}) Then 
+	
+	If TryFind({pic:"Arena_CardCheck_527,287,555,310..png"}) Then 
 
 		Dim PartyTable = {"0":"","1":"128,125","2":"158,125","3":"188,125","4":"218,125","5":"248,125","6":"278,125","7":"308,125","8":"338,125"}
 		Dim selectedColorTable = {"0":"","1":"436962","2":"436962","3":"436962","4":"436962","5":"436962","6":"436962","7":"436962","8":"436962"}
@@ -663,15 +668,12 @@ Function Arena()
 	
 	
 	ElseIf Find({pic:"Arena_StrongEnemy_623,194,705,294..png"}) Then
-
-//UI_arenaTeamColor
-//	ElseIf Find({pic:"Arena_TeamIndex5_257,110,309,143..png",Dot:"277,125"}) Then
-//	ElseIf Find({pic:"Arena_TeamIndex5Select_257,110,309,143..png", Dot:"716,238"}) Then
-//	ElseIf Find({pic:"Arena_TeamIndex5Select_271,118,288,134..png", Dot:"716,238"}) Then
-	ElseIf TryFind({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Or _
-		   TryFind({pic:"Arena_TeamIndex5Select_257,110,309,143..png"}) Or _
-		   TryFind({pic:"Arena_TeamIndex5Select_271,118,288,134..png"}) Then
-		   ArenaPartySelect(UI_arenaTeamIndex,UI_arenaTeamIndex)
+	
+	//Arena_PartyPage_387,107,435,125..png
+//	ElseIf TryFind({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Or _
+//		   TryFind({pic:"Arena_TeamIndex5Select_257,110,309,143..png"}) Or _
+//		   TryFind({pic:"Arena_TeamIndex5Select_271,118,288,134..png"}) Then
+	ElseIf ArenaPartySelect(UI_arenaTeamIndex,UI_arenaTeamIndex) Then
 	
 	ElseIf Find({pic:"Arena_SelectCard_321,68,460,103..png",Dot:"456,259"}) Then
 	ElseIf Find({pic:"Arena_BattleStart_430,471,526,498..png"}) Then

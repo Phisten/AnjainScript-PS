@@ -602,8 +602,9 @@ End Function
 
 Function PartySelect(PartyIndex)
 	Dim PartySelectSuccess = False
-	If TryFind({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}) Then 
-
+	
+	If TryFind({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}) Or _
+		        TryFind({pic:"BattleReady_StartBattleWithOutFriend_774,500,885,521..png"}) Then 
 		Dim PartyTable = {"0":"","1":"176,100","2":"198,100","3":"221,100","4":"243,100","5":"266,100","6":"288,100","7":"311,100","8":"334,100"}
 		Dim selectedColorTable = {"0":"","1":"608C83","2":"66A998","3":"66A998","4":"66A998","5":"5B6C6C","6":"619A8C","7":"526363","8":"48615C"}
 		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF"}
@@ -621,7 +622,8 @@ Function PartySelect(PartyIndex)
 		ElseIf TryFind({color:selectedColorTable[PartyIndex], findRect:partyPos}) Then
 			PartySelectSuccess = True
 			Delay 2000
-			Find({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"})
+			Find ({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"})
+			Find ({pic:"BattleReady_StartBattleWithOutFriend_774,500,885,521..png"})
 		End If
 
 	End If
@@ -745,8 +747,9 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_CreatedStatus_466,146,543,156..png", Dot:"921,509"}) Then
 		NeedCreateIdola = false
 	
-	
-	ElseIf TryFind({pic:"Idola_HaveEnergy_736,78,809,91.png"}) Then 
+	'
+	ElseIf TryFind({pic:"Idola_HaveEnergy_738,80,748,89..png"}) Then
+	//old Idola_HaveEnergy_736,78,809,91
 		PartyCase = "idola"
 		MemberCase = "best"
 		

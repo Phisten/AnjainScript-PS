@@ -632,7 +632,7 @@ End Function
 Function ArenaPartySelect(PartyIndex,ColorIndex)
 	Dim PartySelectSuccess = False
 	
-	If TryFind({pic:"Arena_CardCheck_527,287,555,310..png"}) Then 
+	If TryFind({pic:"Arena_CardCheck_525,281,559,314..png"}) Then 
 
 		Dim PartyTable = {"0":"","1":"128,125","2":"158,125","3":"188,125","4":"218,125","5":"248,125","6":"278,125","7":"308,125","8":"338,125"}
 		Dim selectedColorTable = {"0":"","1":"436962","2":"436962","3":"436962","4":"436962","5":"436962","6":"436962","7":"436962","8":"436962"}
@@ -668,8 +668,7 @@ Function Arena()
 	Arena = true
 	If false Then
 	
-	
-	ElseIf Find({pic:"Arena_StrongEnemy_623,194,705,294..png"}) Then
+	ElseIf Find({pic:"Arena_StrongEnemy_623,227,693,298..png"}) Then
 	
 	//Arena_PartyPage_387,107,435,125..png
 //	ElseIf TryFind({pic:"Arena_TeamIndex5_257,110,309,143..png"}) Or _

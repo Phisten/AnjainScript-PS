@@ -473,6 +473,9 @@ While True
 	ElseIf Find({pic:"BattleEnd_NextBtn_460,490,500,508..png"}) Then 
 	ElseIf Find({pic:"BattleEnd_FirstResult_438,484,549,505..png"}) Then
 	ElseIf Find({pic:"BattleResult_Items_929,30,847,13..png", Dot:"496,499"}) Then
+	ElseIf Find({pic:"NoActionPoint_377,125,577,180..png", Dot:"354,440"}) Then
+		Delay 4000
+		TapXy 555,496
 	ElseIf Find({pic:"BattleEnd_again_374,505,338,495..png"}) Then
 	ElseIf Find({pic:"BattleEnd_DoNotPostIdola_390,508,308,495..png"}) Then
 	ElseIf Find({pic:"BattleEnd_Gift_168,489,223,526..png"}) Then
@@ -536,7 +539,8 @@ While True
 	ElseIf Find({pic:"TimeOut_373,168,568,227..png", Dot:"574,373"}) Then
 	
 	
-	ElseIf Find({pic:"ContinueBattle_435,253,305,211..png",Dot:"575,442"}) Then
+	ElseIf Find({pic:"ContinueBattle_435,253,305,211..png", Dot:"575,442"}) Then
+	ElseIf Find({pic:"Page_newChar_772,4,942,42..png",Dot:"494,500"}) Then
 	
 	ElseIf isTimeOver(sLastTap, UI_resetAppTime * 60000) Then
 		TracePrint "AppStuck, Restart"

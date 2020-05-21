@@ -713,8 +713,7 @@ Function IdolaBattle()
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateIdola_691,106,746,116..png", Dot:"696,452"}) Then
 	
 	
-	ElseIf Find({pic:"Idola_CreateBtn_866,397,913,448..png"}) Then
-	ElseIf Find({pic:"Idola_CreateBtn_855,378,927,453..png"}) Then
+	ElseIf Find({pic:"Idola_CreateBtn_864,396,913,436..png"}) Then
 	'ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png", Dot:"600,413"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_435,185,284,169..png", Dot:"600,413"}) Then
 	
@@ -751,8 +750,7 @@ Function IdolaBattle()
 		NeedCreateIdola = false
 	
 	'
-	ElseIf TryFind({pic:"Idola_HaveEnergy_738,80,748,89..png"}) Then
-	//old Idola_HaveEnergy_736,78,809,91
+	ElseIf TryFind({pic:"Idola_HaveEnergy_737,78,750,91..png"}) Then
 		PartyCase = "idola"
 		MemberCase = "best"
 		
@@ -762,11 +760,6 @@ Function IdolaBattle()
 		If Find({pic:"Idola_1HasBeenBattle_791,150,820,155..png", tapMode:DoNothing}) Then 
 			L1Class = -1
 		Else 
-			L1Class = L1Class + Find({pic:"Idola_1isClassS_529,218,555,233..png", tapMode:DoNothing})*-1000
-			L1Class = L1Class + Find({pic:"Idola_1isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
-			L1Class = L1Class + Find({pic:"Idola_2isRare_877,166,917,176..png", tapMode:DoNothing})*-10
-			L1Class = L1Class + Find({pic:"Idola_1isClassPlus_550,179,564,186..png", tapMode:DoNothing}) * -1
-			'todo HP
 		End If
 		
 		Dim L2Class
@@ -774,10 +767,6 @@ Function IdolaBattle()
 		If Find({pic:"Idola_2HasBeenBattle_791,294,820,298..png", tapMode:DoNothing}) Then 
 			L2Class = -1
 		Else 
-			L2Class = L2Class + Find({pic:"Idola_2isClassS_529,360,555,373..png", tapMode:DoNothing})*-1000
-			L2Class = L2Class + Find({pic:"Idola_2isClassA_529,360,555,373..png", tapMode:DoNothing})*-100
-			L2Class = L2Class + Find({pic:"Idola_2isRare_869,305,918,316..png", tapMode:DoNothing})*-10
-			L2Class = L2Class + Find({pic:"Idola_2isClassPlus_541,321,568,328..png", tapMode:DoNothing}) * -1
 		End If
 		
 		TracePrint "debug : L1Class:" & L1Class & " , " & "L2Class:" & L2Class
@@ -788,13 +777,10 @@ Function IdolaBattle()
 		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
 		ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
 		
-		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class > 100 Then 
+		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class >= 0 Then 
 			TapRect 527,184,829,238
-		ElseIf MenuIsNotOn And L2Class > 100 Then
+		ElseIf MenuIsNotOn And L2Class >= 0 Then
 			TapRect 560, 329, 837, 386
-		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_821,122,784,112..png"}) Then
-		ElseIf MenuIsNotOn And Find({pic:"Idola_RescueTab_762,108,783,122..png"}) Then
-		
 		Else 
 			If MenuIsNotOn Then 
 				TracePrint "Delay for refresh Idola List" 

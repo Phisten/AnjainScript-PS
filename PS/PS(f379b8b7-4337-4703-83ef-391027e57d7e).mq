@@ -609,10 +609,10 @@ Function PartySelect(PartyIndex)
 	
 	If TryFind({pic:"BattleReady_StartBattleWithOutFriend_746,498,918,518..png"}) Or _
 		        TryFind({pic:"BattleReady_StartBattleWithOutFriend_774,500,885,521..png"}) Then 
-		Dim PartyTable = {"0":"","1":"176,100","2":"198,100","3":"221,100","4":"243,100","5":"266,100","6":"288,100","7":"311,100","8":"334,100"}
-		Dim selectedColorTable = {"0":"","1":"5B8F7E","2":"6FB3A2","3":"56806F","4":"64A897","5":"527463","6":"5E9B8A","7":"4D6F5E","8":"4C6E5D"}
+		Dim PartyTable = {"0":"","1":"176,100","2":"198,100","3":"221,100","4":"243,100","5":"266,100","6":"288,100","7":"311,100","8":"334,100","9":""}
+		Dim selectedColorTable = {"0":"","1":"5B8F7E","2":"6FB3A2","3":"56806F","4":"64A897","5":"527463","6":"5E9B8A","7":"4D6F5E","8":"4C6E5D","9":""}
 		'old Dim selectedColorTable = {"0":"","1":"608C83","2":"56806F","3":"66A998","4":"66A998","5":"5B6C6C","6":"619A8C","7":"526363","8":"48615C"}
-		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF"}
+		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF","9":""}
 		
 		If IsNumeric(PartyIndex) Then 
 			PartyIndex = CStr(PartyIndex)
@@ -778,9 +778,9 @@ Function IdolaBattle()
 		If Find({pic:"Idola_ShowManu_RefreshIdola_869,302,917,324..png"}) Then 
 		ElseIf Find({pic:"Idola_MenuSP_908,340,882,326..png"}) Then
 		
-		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class >= 0 Then 
+		ElseIf MenuIsNotOn And L1Class > L2Class And L1Class >= 0 And UI_idolaTeamIndex < 9 Then 
 			TapRect 527,184,829,238
-		ElseIf MenuIsNotOn And L2Class >= 0 Then
+		ElseIf MenuIsNotOn And L2Class >= 0 And UI_idolaTeamIndex < 9 Then
 			TapRect 560, 329, 837, 386
 		Else 
 			If MenuIsNotOn Then 

@@ -715,6 +715,7 @@ Function IdolaBattle()
 	
 	
 	ElseIf Find({pic:"Idola_CreateBtn_864,396,913,436..png"}) Then
+	ElseIf Find({pic:"Idola_CreateBtn_867,394,920,447..png"}) Then
 	'ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm2_375,325,358,302..png", Dot:"600,413"}) Then
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateConfirm_435,185,284,169..png", Dot:"600,413"}) Then
 	
@@ -751,7 +752,7 @@ Function IdolaBattle()
 		NeedCreateIdola = false
 	
 	'
-	ElseIf TryFind({pic:"Idola_HaveEnergy_737,78,750,91..png"}) Then
+	ElseIf TryFind({pic:"Idola_HaveEnergy_738,80,748,90..png"}) Then
 		PartyCase = "idola"
 		MemberCase = "best"
 		

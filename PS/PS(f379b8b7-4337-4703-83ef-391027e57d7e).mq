@@ -639,8 +639,8 @@ Function ArenaPartySelect(PartyIndex,ColorIndex)
 	
 	If TryFind({pic:"Arena_CardCheck_525,281,559,314..png"}) Then 
 
-		Dim PartyTable = {"0":"","1":"128,125","2":"158,125","3":"188,125","4":"218,125","5":"248,125","6":"278,125","7":"308,125","8":"338,125"}
-		Dim selectedColorTable = {"0":"","1":"436962","2":"436962","3":"436962","4":"436962","5":"436962","6":"436962","7":"436962","8":"436962"}
+		Dim PartyTable = {"0":"","1":"128,125","2":"158,125","3":"188,125","4":"218,125","5":"248,125","6":"245,126","7":"308,125","8":"338,125"}
+		Dim selectedColorTable = {"0":"","1":"436962","2":"436962","3":"436962","4":"436962","5":"436962","6":"1F3E2D","7":"436962","8":"436962"}
 		Dim unSelectColorTable = {"0":"","1":"D7F5FF","2":"D7F5FF","3":"D7F5FF","4":"D7F5FF","5":"D7F5FF","6":"D7F5FF","7":"D7F5FF","8":"D7F5FF"}
 		
 		If IsNumeric(PartyIndex) Then 
@@ -710,6 +710,8 @@ Function IdolaBattle()
 	ElseIf Find({pic:"Idola_PlayViewEnd_870,373,766,359..png"}) Then
 		NeedCreateIdola = true
 	ElseIf Find({pic:"Idola_StatusDetail_865,439,776,428..png", Dot:"220,515"}) Then
+		NeedCreateIdola = false
+	ElseIf Find({pic:"Idola_ItemNotEnough_281,141,629,207..png", Dot:"363,407"}) Then
 		NeedCreateIdola = false
 	ElseIf NeedCreateIdola And Find({pic:"Idola_CreateIdola_691,106,746,116..png", Dot:"696,452"}) Then
 	
